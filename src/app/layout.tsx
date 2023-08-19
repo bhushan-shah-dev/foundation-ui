@@ -1,24 +1,13 @@
-"use client";
-
-import CssBaseline from "@mui/material/CssBaseline";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
 import type { Metadata } from "next";
-import { Roboto } from "next/font/google";
-import { StrictMode } from "react";
-import "./globals.scss";
+import { Inter } from "next/font/google";
+import "./globals.css";
 
-const roboto = Roboto({ weight: "400", subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Foundation UI",
   description: "An AI Assistant",
 };
-
-const theme = createTheme({
-  palette: {
-    mode: "dark",
-  },
-});
 
 export default function RootLayout({
   children,
@@ -26,13 +15,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <StrictMode>
-      <CssBaseline enableColorScheme />
-      <ThemeProvider theme={theme}>
-        <html lang="en">
-          <body className={roboto.className}>{children}</body>
-        </html>
-      </ThemeProvider>
-    </StrictMode>
+    <html lang="en">
+      <body className={inter.className}>{children}</body>
+    </html>
   );
 }
