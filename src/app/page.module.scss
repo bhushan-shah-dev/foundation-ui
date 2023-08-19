@@ -18,6 +18,17 @@
 
   main {
     grid-column: 2 / 3;
+    display: flex;
+    flex-direction: column;
+
+    .wizard-controls {
+      margin-top: auto;
+      display: flex;
+
+      .next-btn {
+        margin-left: auto;
+      }
+    }
   }
 
   .right-panel {
@@ -26,5 +37,7 @@
 
   footer {
     grid-column: 1 / 4;
+    display: flex;
+    justify-content: center;
   }
 }
