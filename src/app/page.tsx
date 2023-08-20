@@ -1,38 +1,31 @@
 "use client";
 
-import { Button, Heading } from "@chakra-ui/react";
+import DisplayRulesEncoding from "@/components/display-rules-encoding";
+import UploadRulesFile from "@/components/upload-rules-file";
+import WizardControls from "@/components/wizard-controls";
+import WizardStepWrapper from "@/components/wizard-step-wrapper";
+import { RulesEncoding } from "@/types";
+import { Heading } from "@chakra-ui/react";
 import Image from "next/image";
-import { FC } from "react";
-import { Wizard, useWizard } from "react-use-wizard";
+import { useCallback, useState } from "react";
+import { Wizard } from "react-use-wizard";
 import logo from "./logo.png";
 import styles from "./page.module.scss";
 
-const WizardControls: FC = function () {
-  const {
-    isLoading,
-    isLastStep,
-    isFirstStep,
-    activeStep,
-    stepCount,
-    previousStep,
-    nextStep,
-    goToStep,
-    handleStep,
-  } = useWizard();
-
-  return (
-    <div className={styles["wizard-controls"]}>
-      {!isFirstStep && <Button onClick={previousStep}>Back</Button>}
-      {!isLastStep && (
-        <Button className={styles["next-btn"]} onClick={nextStep}>
-          Next
-        </Button>
-      )}
-    </div>
-  );
-};
-
 export default function Home() {
+  const [isRulesFileUploaded, setIsRulesFileUploaded] =
+    useState<boolean>(false);
+  const [rulesEncoding, setRulesEncoding] = useState<RulesEncoding | null>(
+    null
+  );
+
+  const updateRulesEncoding = useCallback(function (
+    rulesEncoding: RulesEncoding
+  ) {
+    setRulesEncoding(rulesEncoding);
+  },
+  []);
+
   return (
     <div className={styles.container}>
       <header>
@@ -41,10 +34,21 @@ export default function Home() {
       </header>
       <div className={styles["left-panel"]}>Left Sidebar</div>
       <main>
-        <Wizard footer={<WizardControls />}>
-          <Heading>Step 1</Heading>
+        <Wizard
+          footer={<WizardControls isNextStepDisabled={!isRulesFileUploaded} />}
+        >
+          <WizardStepWrapper>
+            <UploadRulesFile
+              onRulesFileUpload={function () {
+                setIsRulesFileUploaded(true);
+              }}
+              onRulesEncodingCompute={updateRulesEncoding}
+            />
+          </WizardStepWrapper>
 
-          <Heading>Step 2</Heading>
+          <WizardStepWrapper>
+            <DisplayRulesEncoding rulesEncoding={rulesEncoding!} />
+          </WizardStepWrapper>
 
           <Heading>Step 3</Heading>
         </Wizard>
