@@ -12,11 +12,15 @@ const DisplayRulesEncoding: FC<DisplayRulesEncodingProps> = function ({
 }) {
   return (
     <div className={styles.container}>
-      {Object.entries(rulesEncoding).map(function ([ruleType, ruleEncoding]) {
+      {rulesEncoding.map(function (ruleEncoding) {
         return (
           <>
-            <Heading>{ruleType}</Heading>
-            <Text>{JSON.stringify(ruleEncoding)}</Text>
+            <Heading>{ruleEncoding.sectionName}</Heading>
+            <Text>{JSON.stringify(ruleEncoding.plaintext)}</Text>
+            <Text>{JSON.stringify(ruleEncoding.code)}</Text>
+            {ruleEncoding.additionalInfo ? (
+              <Text>{JSON.stringify(ruleEncoding.additionalInfo)}</Text>
+            ) : null}
           </>
         );
       })}
