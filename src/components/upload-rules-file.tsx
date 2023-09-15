@@ -50,7 +50,7 @@ const UploadRulesFileControl: FC<UploadRulesFileControlProps> = function ({
       <Text fontSize="3xl">Upload rules file</Text>
       <Input
         type="file"
-        accept=".json,application/json"
+        accept=".html,text/html"
         onChange={function (e) {
           if (e.target.files?.[0]) {
             setRulesFile(e.target.files[0]);
