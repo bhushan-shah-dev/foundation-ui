@@ -1,5 +1,13 @@
 import { RulesEncoding } from "@/types";
-import { Heading, Text } from "@chakra-ui/react";
+import {
+  Heading,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Text,
+} from "@chakra-ui/react";
 import { FC } from "react";
 import styles from "./display-rules-encoding.module.scss";
 
@@ -16,11 +24,19 @@ const DisplayRulesEncoding: FC<DisplayRulesEncodingProps> = function ({
         return (
           <>
             <Heading>{ruleEncoding.sectionName}</Heading>
-            <Text>{JSON.stringify(ruleEncoding.plaintext)}</Text>
-            <Text>{JSON.stringify(ruleEncoding.code)}</Text>
             {ruleEncoding.additionalInfo ? (
               <Text>{JSON.stringify(ruleEncoding.additionalInfo)}</Text>
             ) : null}
+            <Tabs>
+              <TabList>
+                <Tab>Rules</Tab>
+                <Tab>Code</Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel>{ruleEncoding.plaintext}</TabPanel>
+                <TabPanel>{ruleEncoding.code}</TabPanel>
+              </TabPanels>
+            </Tabs>
           </>
         );
       })}
