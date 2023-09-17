@@ -9,11 +9,16 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { FC } from "react";
+import { Light as SyntaxHighlighter } from "react-syntax-highlighter";
+import python from "react-syntax-highlighter/dist/esm/languages/hljs/python";
+import docco from "react-syntax-highlighter/dist/esm/styles/hljs/docco";
 import styles from "./display-rules-encoding.module.scss";
 
 type DisplayRulesEncodingProps = {
   rulesEncoding: RulesEncoding;
 };
+
+SyntaxHighlighter.registerLanguage("python", python);
 
 const DisplayRulesEncoding: FC<DisplayRulesEncodingProps> = function ({
   rulesEncoding,
@@ -34,7 +39,11 @@ const DisplayRulesEncoding: FC<DisplayRulesEncodingProps> = function ({
               </TabList>
               <TabPanels>
                 <TabPanel>{ruleEncoding.plaintext}</TabPanel>
-                <TabPanel>{ruleEncoding.code}</TabPanel>
+                <TabPanel>
+                  <SyntaxHighlighter language="python" style={docco}>
+                    {ruleEncoding.code}
+                  </SyntaxHighlighter>
+                </TabPanel>
               </TabPanels>
             </Tabs>
           </>
