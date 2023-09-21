@@ -1,3 +1,32 @@
+// #region encode-rules-data
+
+// Request:
+// multipart form data:
+// rulesFile: rules.html
+
+// Response: RulesData
+
+// #endregion
+
+// #region encode-column-schema-mapping
+
+// Request:
+// multipart form data:
+// patientRecordsFiles: [p1.csv, p2.csv...]
+// variables: RulesData
+
+// Response: SchemaMappingData
+
+// #endregion
+
+// #region encode-value-schema-mapping
+
+// Request: SchemaMappingData
+
+// Response: ValueSchemaMapping
+
+// #endregion
+
 export type RuleEncoding = {
   sectionName: string;
   plaintext: string;
@@ -6,3 +35,27 @@ export type RuleEncoding = {
 };
 
 export type RulesEncoding = Array<RuleEncoding>;
+
+export type VariableMap = Record<string, string[]>;
+
+export type RulesData = {
+  rulesEncoding: RulesEncoding;
+  variables: VariableMap;
+};
+
+export type PatientRecordsSchema = {
+  root: Record<string, Record<string, string[]>[]>;
+};
+
+export type ColumnSchemaMapping = Record<string, Record<string, string>>;
+
+export type SchemaMappingData = {
+  variables: VariableMap;
+  schema: PatientRecordsSchema;
+  columnSchemaMapping: ColumnSchemaMapping;
+};
+
+export type ValueSchemaMapping = Record<
+  string,
+  Record<string, Record<string, string[]>>
+>;
