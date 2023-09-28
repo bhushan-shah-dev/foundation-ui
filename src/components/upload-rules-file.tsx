@@ -1,4 +1,4 @@
-import { RulesEncoding } from "@/types";
+import { RulesData } from "@/types";
 import { Input, Text } from "@chakra-ui/react";
 import { FC, useState } from "react";
 import { useWizard } from "react-use-wizard";
@@ -6,7 +6,7 @@ import styles from "./upload-rules-file.module.scss";
 
 type UploadRulesFileControlProps = {
   onRulesFileUpload: () => void;
-  onRulesEncodingCompute: (rulesEncoding: RulesEncoding) => void;
+  onRulesEncodingCompute: (rulesData: RulesData) => void;
 };
 
 const UploadRulesFileControl: FC<UploadRulesFileControlProps> = function ({
@@ -34,15 +34,21 @@ const UploadRulesFileControl: FC<UploadRulesFileControlProps> = function ({
     formData.append("rulesFile", rulesFile);
 
     const result = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/upload-rules-file`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/encode-rules-data`,
       {
         method: "POST",
         body: formData,
       }
     );
-    const rulesEncoding: RulesEncoding = await result.json();
+    const rulesData: RulesData = await result.json();
 
-    onRulesEncodingCompute(rulesEncoding);
+    localStorage.setItem(
+      "rulesEncoding",
+      JSON.stringify(rulesData.rulesEncoding)
+    );
+    localStorage.setItem("variableMap", JSON.stringify(rulesData.variableMap));
+
+    onRulesEncodingCompute(rulesData);
   });
 
   return (
@@ -50,6 +56,7 @@ const UploadRulesFileControl: FC<UploadRulesFileControlProps> = function ({
       <Text fontSize="3xl">Upload rules file</Text>
       <Input
         type="file"
+        multiple
         accept=".html,text/html"
         onChange={function (e) {
           if (e.target.files?.[0]) {

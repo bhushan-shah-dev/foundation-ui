@@ -8,11 +8,11 @@
 
 // #endregion
 
-// #region encode-column-schema-mapping
+// #region column-schema-mapping
 
 // Request:
 // multipart form data:
-// patientRecordsFiles: [p1.csv, p2.csv...]
+// schemaFiles: [p1.csv, p2.csv...]
 // variables: RulesData
 
 // Response: SchemaMappingData
@@ -40,7 +40,7 @@ export type VariableMap = Record<string, string[]>;
 
 export type RulesData = {
   rulesEncoding: RulesEncoding;
-  variables: VariableMap;
+  variableMap: VariableMap;
 };
 
 export type PatientRecordsSchema = {
@@ -50,8 +50,8 @@ export type PatientRecordsSchema = {
 export type ColumnSchemaMapping = Record<string, Record<string, string>>;
 
 export type SchemaMappingData = {
-  variables: VariableMap;
-  schema: PatientRecordsSchema;
+  variableMap: VariableMap;
+  patientRecordsSchema: PatientRecordsSchema;
   columnSchemaMapping: ColumnSchemaMapping;
 };
 

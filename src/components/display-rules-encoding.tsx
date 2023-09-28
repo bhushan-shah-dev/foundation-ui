@@ -1,4 +1,4 @@
-import { RulesEncoding } from "@/types";
+import { RulesData } from "@/types";
 import {
   Heading,
   Tab,
@@ -15,17 +15,17 @@ import docco from "react-syntax-highlighter/dist/esm/styles/hljs/docco";
 import styles from "./display-rules-encoding.module.scss";
 
 type DisplayRulesEncodingProps = {
-  rulesEncoding: RulesEncoding;
+  rulesData: RulesData;
 };
 
 SyntaxHighlighter.registerLanguage("python", python);
 
 const DisplayRulesEncoding: FC<DisplayRulesEncodingProps> = function ({
-  rulesEncoding,
+  rulesData,
 }) {
   return (
     <div className={styles.container}>
-      {rulesEncoding.map(function (ruleEncoding) {
+      {rulesData.rulesEncoding.map(function (ruleEncoding) {
         return (
           <>
             <Heading>{ruleEncoding.sectionName}</Heading>
@@ -38,7 +38,10 @@ const DisplayRulesEncoding: FC<DisplayRulesEncodingProps> = function ({
                 <Tab>Code</Tab>
               </TabList>
               <TabPanels>
-                <TabPanel>{ruleEncoding.plaintext}</TabPanel>
+                <TabPanel>
+                  {/**FIXME: newlines not rendering */}
+                  {ruleEncoding.plaintext}
+                </TabPanel>
                 <TabPanel>
                   <SyntaxHighlighter language="python" style={docco}>
                     {ruleEncoding.code}
