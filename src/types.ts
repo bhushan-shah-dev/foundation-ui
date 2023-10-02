@@ -19,7 +19,7 @@
 
 // #endregion
 
-// #region encode-value-schema-mapping
+// #region value-schema-mapping
 
 // Request: SchemaMappingData
 
