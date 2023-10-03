@@ -2,12 +2,18 @@
 
 import DisplayColumnSchemaMapping from "@/components/display-column-schema-mapping";
 import DisplayRulesEncoding from "@/components/display-rules-encoding";
+import DisplayRulesResult from "@/components/display-rules-result";
 import DisplayValueSchemaMapping from "@/components/display-value-schema-mapping";
 import UploadRulesFile from "@/components/upload-rules-file";
 import UploadSchemaFilesControl from "@/components/upload-schema-files";
 import WizardControls from "@/components/wizard-controls";
 import WizardStepWrapper from "@/components/wizard-step-wrapper";
-import { RulesData, SchemaMappingData, ValueSchemaMapping } from "@/types";
+import {
+  RulesData,
+  RulesResult,
+  SchemaMappingData,
+  ValueSchemaMapping,
+} from "@/types";
 import { Heading } from "@chakra-ui/react";
 import Image from "next/image";
 import { useCallback, useState } from "react";
@@ -25,6 +31,7 @@ export default function Home() {
     useState<SchemaMappingData | null>(null);
   const [valueSchemaMapping, setValueSchemaMapping] =
     useState<ValueSchemaMapping | null>(null);
+  const [rulesResult, setRulesResult] = useState<RulesResult | null>(null);
 
   const updateRulesData = useCallback(function (rulesData: RulesData) {
     setRulesData(rulesData);
@@ -81,7 +88,12 @@ export default function Home() {
           <WizardStepWrapper>
             <DisplayValueSchemaMapping
               valueSchemaMapping={valueSchemaMapping!}
+              updateRulesResult={setRulesResult}
             />
+          </WizardStepWrapper>
+
+          <WizardStepWrapper>
+            <DisplayRulesResult rulesResult={rulesResult!} />
           </WizardStepWrapper>
         </Wizard>
       </main>

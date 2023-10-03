@@ -59,3 +59,11 @@ export type ValueSchemaMapping = Record<
   string,
   Record<string, Record<string, string[]>>
 >;
+
+export type RulesResultSummary = Record<string, number>;
+export type RulesResultDetails = Record<string, string>[];
+
+export type RulesResult = {
+  resultSummary: RulesResultSummary;
+  resultDetails: RulesResultDetails;
+};
