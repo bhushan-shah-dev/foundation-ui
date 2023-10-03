@@ -1,4 +1,9 @@
-import { ColumnSchemaMapping, SchemaMappingData } from "@/types";
+import {
+  ColumnSchemaMapping,
+  SchemaMappingData,
+  ValueSchemaMapping,
+  VariableMap,
+} from "@/types";
 import { Select } from "@chakra-ui/react";
 import { FC, useState } from "react";
 import { useWizard } from "react-use-wizard";
@@ -8,11 +13,13 @@ const NA_OPTION = "N/A";
 
 type DisplayColumnSchemaMappingProps = {
   schemaMappingData: SchemaMappingData;
+  updateValueSchemaMapping: (valueSchemaMapping: ValueSchemaMapping) => void;
 };
 
 const DisplayColumnSchemaMapping: FC<DisplayColumnSchemaMappingProps> =
   function ({
     schemaMappingData: { patientRecordsSchema, columnSchemaMapping },
+    updateValueSchemaMapping,
   }) {
     const [selectedColumnSchemaMapping, setSelectedColumnSchemaMapping] =
       useState<ColumnSchemaMapping>(columnSchemaMapping);
@@ -30,6 +37,7 @@ const DisplayColumnSchemaMapping: FC<DisplayColumnSchemaMappingProps> =
     } = useWizard();
 
     handleStep(async function () {
+      // TODO: Remove localStorage setItem
       localStorage.setItem(
         "patientRecordsSchema",
         JSON.stringify(patientRecordsSchema)
@@ -38,6 +46,27 @@ const DisplayColumnSchemaMapping: FC<DisplayColumnSchemaMappingProps> =
         "columnSchemaMapping",
         JSON.stringify(columnSchemaMapping)
       );
+
+      const variableMap: VariableMap = JSON.parse(
+        localStorage.getItem("variableMap")!
+      ) as VariableMap;
+
+      const result = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/value-schema-mapping`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            variableMap,
+            patientRecordsSchema,
+            columnSchemaMapping,
+          } as SchemaMappingData),
+        }
+      );
+      const valueSchemaMapping: ValueSchemaMapping = await result.json();
+      updateValueSchemaMapping(valueSchemaMapping);
     });
 
     const fileOptions = new Set<string>();
