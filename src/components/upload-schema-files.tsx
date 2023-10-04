@@ -1,17 +1,19 @@
 import { SchemaMappingData } from "@/types";
-import { Input, Text } from "@chakra-ui/react";
+import { Heading, Input } from "@chakra-ui/react";
 import { FC, useState } from "react";
 import { useWizard } from "react-use-wizard";
-import styles from "./upload-rules-file.module.scss";
+import styles from "./upload-schema-files.module.scss";
 
 type UploadSchemaFilesControlProps = {
-  onSchemaFilesUpload: () => void;
+  updateIsSchemaFilesSelected: (isSchemaFilesSelected: boolean) => void;
+  updateIsSchemaFilesUploading: (isSchemaFilesUploading: boolean) => void;
   onSchemaMappingDataCompute: (schemaMappingData: SchemaMappingData) => void;
 };
 
 const UploadSchemaFilesControl: FC<UploadSchemaFilesControlProps> = function ({
-  onSchemaFilesUpload,
-  onSchemaMappingDataCompute: onColumnSchemaMappingCompute,
+  updateIsSchemaFilesSelected,
+  updateIsSchemaFilesUploading,
+  onSchemaMappingDataCompute,
 }) {
   const [schemaFiles, setSchemaFiles] = useState<FileList | null>(null);
 
@@ -39,6 +41,7 @@ const UploadSchemaFilesControl: FC<UploadSchemaFilesControlProps> = function ({
     }
     formData.append("variableMap", variableMapString);
 
+    updateIsSchemaFilesUploading(true);
     const result = await fetch(
       `${process.env.NEXT_PUBLIC_API_BASE_URL}/column-schema-mapping`,
       {
@@ -46,20 +49,22 @@ const UploadSchemaFilesControl: FC<UploadSchemaFilesControlProps> = function ({
         body: formData,
       }
     );
+    updateIsSchemaFilesUploading(false);
     const schemaMappingData: SchemaMappingData = await result.json();
 
-    onColumnSchemaMappingCompute(schemaMappingData);
+    onSchemaMappingDataCompute(schemaMappingData);
   });
 
   return (
     <div className={styles.container}>
-      <Text fontSize="3xl">Upload patient data files</Text>
+      <Heading size="md">Upload patient data files</Heading>
       <Input
         type="file"
         multiple
         onChange={function (e) {
           if (e.target.files?.length) {
             setSchemaFiles(e.target.files);
+            updateIsSchemaFilesSelected(true);
           }
         }}
       />

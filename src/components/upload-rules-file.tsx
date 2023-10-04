@@ -1,16 +1,21 @@
 import { RulesData } from "@/types";
-import { Input, Text } from "@chakra-ui/react";
-import { FC, useState } from "react";
+import { Input } from "@chakra-ui/react";
+import { FC, useEffect, useState } from "react";
 import { useWizard } from "react-use-wizard";
 import styles from "./upload-rules-file.module.scss";
+import { WizardStep } from "./wizard-step-wrapper";
 
 type UploadRulesFileControlProps = {
-  onRulesFileUpload: () => void;
+  updateCurrentStep: (currentStep: WizardStep) => void;
+  updateIsRulesFileSelected: (isRulesFileSelected: boolean) => void;
+  updateIsRulesFileUploading: (isRulesFileUploading: boolean) => void;
   onRulesEncodingCompute: (rulesData: RulesData) => void;
 };
 
 const UploadRulesFileControl: FC<UploadRulesFileControlProps> = function ({
-  onRulesFileUpload,
+  updateCurrentStep,
+  updateIsRulesFileSelected,
+  updateIsRulesFileUploading,
   onRulesEncodingCompute,
 }) {
   const [rulesFile, setRulesFile] = useState<File | null>(null);
@@ -33,6 +38,7 @@ const UploadRulesFileControl: FC<UploadRulesFileControlProps> = function ({
     const formData = new FormData();
     formData.append("rulesFile", rulesFile);
 
+    updateIsRulesFileUploading(true);
     const result = await fetch(
       `${process.env.NEXT_PUBLIC_API_BASE_URL}/encode-rules-data`,
       {
@@ -40,6 +46,7 @@ const UploadRulesFileControl: FC<UploadRulesFileControlProps> = function ({
         body: formData,
       }
     );
+    updateIsRulesFileUploading(false);
     const rulesData: RulesData = await result.json();
 
     localStorage.setItem(
@@ -51,9 +58,15 @@ const UploadRulesFileControl: FC<UploadRulesFileControlProps> = function ({
     onRulesEncodingCompute(rulesData);
   });
 
+  useEffect(
+    function () {
+      updateCurrentStep(WizardStep.UploadRules_1);
+    },
+    [updateCurrentStep]
+  );
+
   return (
     <div className={styles.container}>
-      <Text fontSize="3xl">Upload rules file</Text>
       <Input
         type="file"
         multiple
@@ -61,7 +74,7 @@ const UploadRulesFileControl: FC<UploadRulesFileControlProps> = function ({
         onChange={function (e) {
           if (e.target.files?.[0]) {
             setRulesFile(e.target.files[0]);
-            onRulesFileUpload();
+            updateIsRulesFileSelected(true);
           }
         }}
       />

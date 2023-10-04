@@ -7,7 +7,9 @@ import DisplayValueSchemaMapping from "@/components/display-value-schema-mapping
 import UploadRulesFile from "@/components/upload-rules-file";
 import UploadSchemaFilesControl from "@/components/upload-schema-files";
 import WizardControls from "@/components/wizard-controls";
-import WizardStepWrapper from "@/components/wizard-step-wrapper";
+import WizardStepWrapper, {
+  WizardStep,
+} from "@/components/wizard-step-wrapper";
 import {
   RulesData,
   RulesResult,
@@ -16,15 +18,20 @@ import {
 } from "@/types";
 import { Heading } from "@chakra-ui/react";
 import Image from "next/image";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Wizard } from "react-use-wizard";
 import logo from "./logo.png";
 import styles from "./page.module.scss";
 
 export default function Home() {
-  const [isRulesFileUploaded, setIsRulesFileUploaded] =
+  const [currentStep, setCurrentStep] = useState<WizardStep | null>(null);
+  const [isRulesFileSelected, setIsRulesFileSelected] =
     useState<boolean>(false);
-  const [isSchemaFilesUploaded, setIsSchemaFilesUploaded] =
+  const [isRulesFileUploading, setIsRulesFileUploading] =
+    useState<boolean>(false);
+  const [isSchemaFilesSelected, setIsSchemaFilesSelected] =
+    useState<boolean>(false);
+  const [isSchemaFilesUploading, setIsSchemaFilesUploading] =
     useState<boolean>(false);
   const [rulesData, setRulesData] = useState<RulesData | null>(null);
   const [schemaMappingData, setSchemaMappingData] =
@@ -44,61 +51,86 @@ export default function Home() {
   },
   []);
 
+  const isNextStepDisabled = useMemo<boolean>(
+    function () {
+      if (currentStep === null) return true;
+      console.table({ currentStep });
+      if (
+        [WizardStep.UploadRules_1, WizardStep.UploadRules_2].includes(
+          currentStep
+        )
+      ) {
+        console.log("upload rules step");
+        return !isRulesFileSelected || isRulesFileUploading;
+      }
+      if ([WizardStep.SchemaMapping_1].includes(currentStep)) {
+        console.log("schema mapping step");
+        return !isSchemaFilesSelected || isSchemaFilesUploading;
+      }
+      return true;
+    },
+    [
+      currentStep,
+      isRulesFileSelected,
+      isRulesFileUploading,
+      isSchemaFilesSelected,
+      isSchemaFilesUploading,
+    ]
+  );
+
   return (
     <div className={styles.container}>
       <header>
         <Image src={logo} alt="Foundation UI logo" height={50} />
         <Heading>Foundation UI</Heading>
       </header>
-      <div className={styles["left-panel"]}>Left Sidebar</div>
+      <div className={styles["left-panel"]}></div>
       <main>
-        {/**FIXME: update isNextStepDisabled to decide based on current step */}
         <Wizard
-          footer={<WizardControls isNextStepDisabled={!isRulesFileUploaded} />}
+          footer={<WizardControls isNextStepDisabled={isNextStepDisabled} />}
         >
-          <WizardStepWrapper>
+          <WizardStepWrapper index={0}>
             <UploadRulesFile
-              onRulesFileUpload={function () {
-                setIsRulesFileUploaded(true);
-              }}
+              updateCurrentStep={setCurrentStep}
+              updateIsRulesFileSelected={setIsRulesFileSelected}
+              updateIsRulesFileUploading={setIsRulesFileUploading}
               onRulesEncodingCompute={updateRulesData}
             />
           </WizardStepWrapper>
 
-          <WizardStepWrapper>
+          <WizardStepWrapper index={0} isLargeContent={true}>
             <DisplayRulesEncoding rulesData={rulesData!} />
           </WizardStepWrapper>
 
-          <WizardStepWrapper>
+          <WizardStepWrapper index={1}>
             <UploadSchemaFilesControl
-              onSchemaFilesUpload={function () {
-                setIsSchemaFilesUploaded(true);
-              }}
+              updateIsSchemaFilesSelected={setIsSchemaFilesSelected}
+              updateIsSchemaFilesUploading={setIsSchemaFilesUploading}
               onSchemaMappingDataCompute={updateSchemaMappingData}
             />
           </WizardStepWrapper>
 
-          <WizardStepWrapper>
+          <WizardStepWrapper index={2}>
             <DisplayColumnSchemaMapping
               schemaMappingData={schemaMappingData!}
               updateValueSchemaMapping={setValueSchemaMapping}
             />
           </WizardStepWrapper>
 
-          <WizardStepWrapper>
+          <WizardStepWrapper index={3}>
             <DisplayValueSchemaMapping
               valueSchemaMapping={valueSchemaMapping!}
               updateRulesResult={setRulesResult}
             />
           </WizardStepWrapper>
 
-          <WizardStepWrapper>
+          <WizardStepWrapper index={4}>
             <DisplayRulesResult rulesResult={rulesResult!} />
           </WizardStepWrapper>
         </Wizard>
       </main>
-      <div className={styles["right-panel"]}>Right Sidebar</div>
-      <footer>Footer</footer>
+      <div className={styles["right-panel"]}></div>
+      <footer></footer>
     </div>
   );
 }

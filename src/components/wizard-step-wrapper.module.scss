@@ -1,4 +1,23 @@
-.wrapper {
-  display: grid;
-  place-items: center;
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .step-indicator-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .wrapper {
+    display: grid;
+    place-items: center;
+
+    .center {
+      display: flex;
+      align-items: baseline;
+      overflow-y: scroll;
+    }
+  }
 }
