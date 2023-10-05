@@ -38,7 +38,10 @@ const DisplayRulesEncoding: FC<DisplayRulesEncodingProps> = function ({
                 <Tab>Rules</Tab>
                 <Tab>Code</Tab>
               </TabList>
-              <Container>
+              <Container
+                maxW={"100%"}
+                className={styles["tab-panels-container"]}
+              >
                 <TabPanels>
                   <TabPanel
                     className={styles["tab-panel"]}

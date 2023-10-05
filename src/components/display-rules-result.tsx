@@ -1,9 +1,15 @@
 import { RulesResult } from "@/types";
 import {
-  Button,
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from "@chakra-ui/icons";
+import {
+  Heading,
+  IconButton,
   Input,
   Table,
-  TableCaption,
   TableContainer,
   Tbody,
   Td,
@@ -55,9 +61,9 @@ const DisplayRulesResult: FC<DisplayRulesResultProps> = function ({
 
   return (
     <div className={styles["main-container"]}>
-      <TableContainer>
-        <Table variant={"simple"} size={"sm"}>
-          <TableCaption placement="top">Result Summary</TableCaption>
+      <TableContainer className={styles["table-container"]}>
+        <Heading size="sm">Result Summary</Heading>
+        <Table variant="simple" size={"sm"}>
           <Thead>
             <Tr>
               <Th>Variable</Th>
@@ -76,9 +82,11 @@ const DisplayRulesResult: FC<DisplayRulesResultProps> = function ({
           </Tbody>
         </Table>
       </TableContainer>
-      <TableContainer className={styles["details-table-container"]}>
-        <Table variant={"simple"} size={"md"}>
-          <TableCaption placement="top">Result Details</TableCaption>
+      <TableContainer
+        className={`${styles["table-container"]} ${styles["details-table-container"]}`}
+      >
+        <Heading size="md">Result Details</Heading>
+        <Table variant="simple" size={"md"}>
           <Thead>
             {detailsTable.getHeaderGroups().map(function (headerGroup, i) {
               return (
@@ -119,40 +127,36 @@ const DisplayRulesResult: FC<DisplayRulesResultProps> = function ({
           </Tbody>
         </Table>
         <div className={styles["pagination-controls-container"]}>
-          <Button
-            size="xs"
-            variant="outline"
+          <IconButton
+            variant="solid"
+            aria-label="First page"
+            icon={<ArrowLeftIcon />}
             onClick={() => detailsTable.setPageIndex(0)}
-            disabled={!detailsTable.getCanPreviousPage()}
-          >
-            {"<<"}
-          </Button>
-          <Button
-            size="xs"
-            variant="outline"
+            isDisabled={!detailsTable.getCanPreviousPage()}
+          />
+          <IconButton
+            variant="solid"
+            aria-label="Previous page"
+            icon={<ChevronLeftIcon />}
             onClick={() => detailsTable.previousPage()}
-            disabled={!detailsTable.getCanPreviousPage()}
-          >
-            {"<"}
-          </Button>
-          <Button
-            size="xs"
-            variant="outline"
+            isDisabled={!detailsTable.getCanPreviousPage()}
+          />
+          <IconButton
+            variant="solid"
+            aria-label="Next page"
+            icon={<ChevronRightIcon />}
             onClick={() => detailsTable.nextPage()}
-            disabled={!detailsTable.getCanNextPage()}
-          >
-            {">"}
-          </Button>
-          <Button
-            size="xs"
-            variant="outline"
+            isDisabled={!detailsTable.getCanNextPage()}
+          />
+          <IconButton
+            variant="solid"
+            aria-label="Last page"
+            icon={<ArrowRightIcon />}
             onClick={() =>
               detailsTable.setPageIndex(detailsTable.getPageCount() - 1)
             }
-            disabled={!detailsTable.getCanNextPage()}
-          >
-            {">>"}
-          </Button>
+            isDisabled={!detailsTable.getCanNextPage()}
+          />
           <span>
             <div>Page</div>
             <strong>

@@ -61,14 +61,14 @@ const DisplayValueSchemaMapping: FC<DisplayValueSchemaMappingProps> =
           );
 
           return (
-            <label key={encounter}>
-              {encounter}
+            <div key={encounter} className={styles["form-field"]}>
+              <label>{encounter}</label>
               <Select
                 defaultValue={selectedOptions}
                 isMulti
                 options={allOptions}
               />
-            </label>
+            </div>
           );
         })}
       </div>

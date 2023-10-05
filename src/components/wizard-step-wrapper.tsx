@@ -1,6 +1,10 @@
+import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 import {
+  AbsoluteCenter,
   Box,
   Center,
+  Divider,
+  IconButton,
   Spinner,
   Step,
   StepIcon,
@@ -16,26 +20,32 @@ import { FC, PropsWithChildren } from "react";
 import { useWizard } from "react-use-wizard";
 import styles from "./wizard-step-wrapper.module.scss";
 
-export enum WizardStep {
-  UploadRules_1,
-  UploadRules_2,
-  SchemaMapping_1,
-  Other,
-}
-
-const stepLabels = ["Upload rules", "Schema mapping"];
+const stepLabels = ["Upload rules", "Schema mapping", "Generate report"];
 
 type WizardStepWrapperProps = PropsWithChildren & {
   index: number;
   isLargeContent?: boolean;
+  isPrevStepDisabled?: boolean;
+  isNextStepDisabled?: boolean;
 };
 
 const WizardStepWrapper: FC<WizardStepWrapperProps> = function ({
   index,
   isLargeContent = false,
+  isPrevStepDisabled = true,
+  isNextStepDisabled = true,
   children,
 }) {
-  const { isLoading } = useWizard();
+  const {
+    isLoading,
+    isLastStep,
+    isFirstStep,
+    stepCount,
+    previousStep,
+    nextStep,
+    goToStep,
+    handleStep,
+  } = useWizard();
 
   const { activeStep } = useSteps({
     index,
@@ -44,7 +54,7 @@ const WizardStepWrapper: FC<WizardStepWrapperProps> = function ({
 
   return (
     <div className={styles.container}>
-      <Stepper index={activeStep}>
+      <Stepper className={styles.stepper} index={activeStep}>
         {stepLabels.map((step, index) => (
           <Step key={index}>
             <div className={styles["step-indicator-box"]}>
@@ -63,11 +73,37 @@ const WizardStepWrapper: FC<WizardStepWrapperProps> = function ({
           </Step>
         ))}
       </Stepper>
+      <Box className={styles["divider-left"]} position="relative" padding="10">
+        <Divider orientation="vertical" />
+        <AbsoluteCenter>
+          <IconButton
+            isRound
+            variant="solid"
+            aria-label="Back"
+            icon={<ArrowLeftIcon />}
+            onClick={previousStep}
+            isDisabled={isPrevStepDisabled}
+          />
+        </AbsoluteCenter>
+      </Box>
       <div className={styles.wrapper}>
-        <Center className={isLargeContent ? styles.center : ""} height={500}>
+        <Center maxW={"100%"} className={isLargeContent ? styles.center : ""}>
           {isLoading ? <Spinner size="xl" /> : <>{children}</>}
         </Center>
       </div>
+      <Box className={styles["divider-right"]} position="relative" padding="10">
+        <Divider orientation="vertical" />
+        <AbsoluteCenter>
+          <IconButton
+            isRound
+            variant="solid"
+            aria-label="Next"
+            icon={<ArrowRightIcon />}
+            onClick={nextStep}
+            isDisabled={isNextStepDisabled}
+          />
+        </AbsoluteCenter>
+      </Box>
     </div>
   );
 };

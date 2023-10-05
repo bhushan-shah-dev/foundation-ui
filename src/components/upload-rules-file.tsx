@@ -1,19 +1,16 @@
 import { RulesData } from "@/types";
-import { Input } from "@chakra-ui/react";
-import { FC, useEffect, useState } from "react";
+import { Center, Input } from "@chakra-ui/react";
+import { FC, useState } from "react";
 import { useWizard } from "react-use-wizard";
 import styles from "./upload-rules-file.module.scss";
-import { WizardStep } from "./wizard-step-wrapper";
 
 type UploadRulesFileControlProps = {
-  updateCurrentStep: (currentStep: WizardStep) => void;
   updateIsRulesFileSelected: (isRulesFileSelected: boolean) => void;
   updateIsRulesFileUploading: (isRulesFileUploading: boolean) => void;
   onRulesEncodingCompute: (rulesData: RulesData) => void;
 };
 
 const UploadRulesFileControl: FC<UploadRulesFileControlProps> = function ({
-  updateCurrentStep,
   updateIsRulesFileSelected,
   updateIsRulesFileUploading,
   onRulesEncodingCompute,
@@ -58,26 +55,21 @@ const UploadRulesFileControl: FC<UploadRulesFileControlProps> = function ({
     onRulesEncodingCompute(rulesData);
   });
 
-  useEffect(
-    function () {
-      updateCurrentStep(WizardStep.UploadRules_1);
-    },
-    [updateCurrentStep]
-  );
-
   return (
     <div className={styles.container}>
-      <Input
-        type="file"
-        multiple
-        accept=".html,text/html"
-        onChange={function (e) {
-          if (e.target.files?.[0]) {
-            setRulesFile(e.target.files[0]);
-            updateIsRulesFileSelected(true);
-          }
-        }}
-      />
+      <Center height={500}>
+        <Input
+          type="file"
+          multiple
+          accept=".html,text/html"
+          onChange={function (e) {
+            if (e.target.files?.[0]) {
+              setRulesFile(e.target.files[0]);
+              updateIsRulesFileSelected(true);
+            }
+          }}
+        />
+      </Center>
     </div>
   );
 };

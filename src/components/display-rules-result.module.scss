@@ -3,18 +3,31 @@
   flex-direction: column;
   gap: 50px;
   align-items: baseline;
-}
 
-.details-table-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: center;
-}
+  table {
+    thead {
+      background-color: var(--chakra-colors-blue-700);
+    }
+  }
 
-.pagination-controls-container {
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  align-items: center;
+  .table-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .details-table-container {
+    table {
+      max-width: calc(100vw - 400px);
+    }
+  }
+
+  .pagination-controls-container {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+  }
 }

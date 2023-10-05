@@ -77,10 +77,10 @@ const DisplayColumnSchemaMapping: FC<DisplayColumnSchemaMappingProps> =
     });
 
     return (
-      <>
+      <div className={styles.container}>
         {Object.entries(columnSchemaMapping).map(function ([key, value]) {
           return (
-            <div key={key} className={styles.container}>
+            <div key={key} className={styles["form-field"]}>
               <label>{key}</label>
               <Select
                 variant="outline"
@@ -145,7 +145,7 @@ const DisplayColumnSchemaMapping: FC<DisplayColumnSchemaMappingProps> =
             </div>
           );
         })}
-      </>
+      </div>
     );
   };
 

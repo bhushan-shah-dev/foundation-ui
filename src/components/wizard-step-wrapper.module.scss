@@ -1,23 +1,40 @@
 .container {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  display: grid;
+  grid-template: 100px 1fr / 80px 1fr 80px;
 
-  .step-indicator-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
+  .stepper {
+    grid-column: 1 / 4;
+    grid-row: 1 / 2;
+
+    .step-indicator-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+  }
+
+  .divider-left {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
   }
 
   .wrapper {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
     display: grid;
     place-items: center;
 
     .center {
+      width: 100%;
       display: flex;
       align-items: baseline;
       overflow-y: scroll;
     }
+  }
+
+  .divider-right {
+    grid-column: 3 / 4;
+    grid-row: 2 / 3;
   }
 }
