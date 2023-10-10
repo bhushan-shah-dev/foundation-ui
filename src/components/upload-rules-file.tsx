@@ -1,5 +1,5 @@
 import { RulesData } from "@/types";
-import { Center, Input } from "@chakra-ui/react";
+import { Heading, Input, Text } from "@chakra-ui/react";
 import { FC, useState } from "react";
 import { useWizard } from "react-use-wizard";
 import styles from "./upload-rules-file.module.scss";
@@ -57,19 +57,23 @@ const UploadRulesFileControl: FC<UploadRulesFileControlProps> = function ({
 
   return (
     <div className={styles.container}>
-      <Center height={500}>
-        <Input
-          type="file"
-          multiple
-          accept=".html,text/html"
-          onChange={function (e) {
-            if (e.target.files?.[0]) {
-              setRulesFile(e.target.files[0]);
-              updateIsRulesFileSelected(true);
-            }
-          }}
-        />
-      </Center>
+      <Heading size="md">Upload quality measure</Heading>
+      <Input
+        type="file"
+        multiple
+        accept=".html,text/html"
+        onChange={function (e) {
+          if (e.target.files?.[0]) {
+            setRulesFile(e.target.files[0]);
+            updateIsRulesFileSelected(true);
+          }
+        }}
+      />
+      <Text size={"xs"}>
+        <em>
+          Supported file types: <strong>HTML</strong>, <strong>PDF</strong>
+        </em>
+      </Text>
     </div>
   );
 };

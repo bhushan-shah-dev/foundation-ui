@@ -1,5 +1,5 @@
 import { SchemaMappingData } from "@/types";
-import { Heading, Input } from "@chakra-ui/react";
+import { Heading, Input, Text } from "@chakra-ui/react";
 import { FC, useState } from "react";
 import { useWizard } from "react-use-wizard";
 import styles from "./upload-schema-files.module.scss";
@@ -68,6 +68,12 @@ const UploadSchemaFilesControl: FC<UploadSchemaFilesControlProps> = function ({
           }
         }}
       />
+      <Text size={"xs"}>
+        <em>
+          Supported file types: <strong>FHIR</strong>, <strong>HL7</strong>,{" "}
+          <strong>CCDA</strong>, <strong>CSV</strong>
+        </em>
+      </Text>
     </div>
   );
 };

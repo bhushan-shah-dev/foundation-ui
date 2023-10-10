@@ -1,5 +1,10 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  align-items: center;
+  gap: 20px;
+
+  input {
+    outline: solid 1px var(--chakra-colors-blue-50);
+  }
 }
