@@ -13,7 +13,10 @@ import {
   SchemaMappingData,
   ValueSchemaMapping,
 } from "@/types";
+import { ChatIcon } from "@chakra-ui/icons";
 import { Heading } from "@chakra-ui/react";
+import { MendableFloatingButton } from "@mendable/search";
+import { Person } from "@mui/icons-material";
 import Image from "next/image";
 import { useCallback, useState } from "react";
 import { Wizard } from "react-use-wizard";
@@ -121,6 +124,44 @@ export default function Home() {
       </main>
 
       <div className={styles["right-panel"]}></div>
+      <MendableFloatingButton
+        anon_key={process.env.NEXT_PUBLIC_MENDABLE_ANON_KEY!}
+        dialogPlaceholder="How to use this wizard?"
+        icon={
+          <ChatIcon boxSize={"1.5em"} color="var(--chakra-colors-blue-50)" />
+        }
+        botIcon={<Person htmlColor="var(--chakra-colors-blue-700)" />}
+        popupText="Co-pilot Assistant"
+        messageSettings={{
+          openSourcesInNewTab: true,
+          prettySources: true,
+        }}
+        style={{
+          darkMode: false,
+          accentColor: "var(--chakra-colors-blue-500)",
+          backgroundColor: "var(--chakra-colors-blue-50)",
+        }}
+        floatingButtonStyle={{
+          color: "var(--chakra-colors-blue-50)",
+          backgroundColor: "var(--chakra-colors-blue-500)",
+        }}
+        onMessageForTracking={function (question, answer) {
+          console.log("Mendable :: Message sent");
+          console.table({ question, answer });
+        }}
+        onSourceClickedForTracking={function (source) {
+          console.log("Mendable :: Source clicked");
+          console.table({ source });
+        }}
+        onSwitchingSearchType={function (searchType) {
+          console.log("Mendable :: Search type switched");
+          console.table({ searchType });
+        }}
+        onRateClicked={function (isLiked, question, answer, sources) {
+          console.log("Mendable :: Rate clicked");
+          console.table({ isLiked, question, answer, sources });
+        }}
+      />
       <footer></footer>
     </div>
   );
