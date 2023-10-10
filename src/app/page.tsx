@@ -47,33 +47,6 @@ export default function Home() {
   },
   []);
 
-  /*   const isNextStepDisabled = useMemo<boolean>(
-    function () {
-      if (currentStep === null) return true;
-      console.table({ currentStep });
-      if (
-        [WizardStep.UploadRules_1, WizardStep.UploadRules_2].includes(
-          currentStep
-        )
-      ) {
-        console.log("upload rules step");
-        return !isRulesFileSelected || isRulesFileUploading;
-      }
-      if ([WizardStep.SchemaMapping_1].includes(currentStep)) {
-        console.log("schema mapping step");
-        return !isSchemaFilesSelected || isSchemaFilesUploading;
-      }
-      return true;
-    },
-    [
-      currentStep,
-      isRulesFileSelected,
-      isRulesFileUploading,
-      isSchemaFilesSelected,
-      isSchemaFilesUploading,
-    ]
-  ); */
-
   return (
     <div className={styles.container}>
       <header>
