@@ -53,8 +53,8 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <header>
-        <Image src={logo} alt="Foundation UI logo" height={50} />
-        <Heading>Foundation UI</Heading>
+        <Image src={logo} alt="Foundation AI logo" height={50} />
+        <Heading>Foundation AI</Heading>
       </header>
       <div className={styles["left-panel"]}></div>
 

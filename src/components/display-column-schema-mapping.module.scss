@@ -7,8 +7,13 @@
     display: flex;
     gap: 20px;
 
-    label {
+    label,
+    .header {
       width: 200px;
+    }
+
+    .header {
+      text-align: center;
     }
   }
 }

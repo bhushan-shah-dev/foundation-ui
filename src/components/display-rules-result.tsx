@@ -15,8 +15,10 @@ import {
   Td,
   Th,
   Thead,
+  Tooltip,
   Tr,
 } from "@chakra-ui/react";
+import { Download } from "@mui/icons-material";
 import {
   createColumnHelper,
   flexRender,
@@ -85,7 +87,17 @@ const DisplayRulesResult: FC<DisplayRulesResultProps> = function ({
       <TableContainer
         className={`${styles["table-container"]} ${styles["details-table-container"]}`}
       >
-        <Heading size="md">Result Details</Heading>
+        <div className={styles["header-row"]}>
+          <Heading size="md">Result Details</Heading>
+          <Tooltip label="Download as CSV">
+            <IconButton
+              className={styles.icon}
+              size={"xs"}
+              aria-label="Download as CSV"
+              icon={<Download />}
+            />
+          </Tooltip>
+        </div>
         <Table variant="simple" size={"md"}>
           <Thead>
             {detailsTable.getHeaderGroups().map(function (headerGroup, i) {

@@ -4,7 +4,7 @@ import {
   ValueSchemaMapping,
   VariableMap,
 } from "@/types";
-import { Select } from "@chakra-ui/react";
+import { Heading, Select } from "@chakra-ui/react";
 import { FC, useState } from "react";
 import { useWizard } from "react-use-wizard";
 import styles from "./display-column-schema-mapping.module.scss";
@@ -78,6 +78,17 @@ const DisplayColumnSchemaMapping: FC<DisplayColumnSchemaMappingProps> =
 
     return (
       <div className={styles.container}>
+        <div className={styles["form-field"]}>
+          <Heading size={"md"} className={styles.header}>
+            Rule Variables
+          </Heading>
+          <Heading size={"md"} className={styles.header}>
+            Mapped Files
+          </Heading>
+          <Heading size={"md"} className={styles.header}>
+            Mapped Columns
+          </Heading>
+        </div>
         {Object.entries(columnSchemaMapping).map(function ([key, value]) {
           return (
             <div key={key} className={styles["form-field"]}>
